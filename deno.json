@@ -1,0 +1,23 @@
+{
+  "$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.json",
+  "lock": false,
+  "importMap": "import_map.json",
+  "tasks": {
+    "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
+    "build": "deno task lume",
+    "serve": "deno task lume -s"
+  },
+  "compilerOptions": {
+    "jsx": "precompile",
+    "jsxImportSource": "hono/jsx",
+    "jsxFactory": "jsx",
+    "jsxFragmentFactory": "Fragment",
+    "types": [
+      "lume/types.ts"
+    ]
+  },
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true
+  }
+}
