@@ -2,7 +2,7 @@
   "imports": {
     "fff": "https://deno.land/x/fff@v1.1.0/mod.ts",
     "lume/": "https://deno.land/x/lume@v2.0.2/",
-    "lume_theme_shiraha/": "https://cdn.jsdelivr.net/gh/importantimport/lume_theme_shiraha@9cc341cd2922fe65ddbc65a84d530bc667680027/",
+    "lume_theme_shiraha/": "https://cdn.jsdelivr.net/gh/importantimport/lume_theme_shiraha@33cc2437fd7ecfa30d58f9d2e9bc5a0707bf7612/",
     "hono/": "https://deno.land/x/hono@v3.11.0/",
     "hono/jsx/jsx-runtime": "https://deno.land/x/hono@v3.11.0/jsx/jsx-runtime.ts"
   }
