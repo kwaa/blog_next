@@ -22,12 +22,12 @@ jobs:
           deno-version: v1.x
 
       - name: Build step
-        run: deno task build --location=https://kwaa_blog_next.deno.dev # 📝 Update the build command(s) if necessary
+        run: deno task build --location=https://kwaa-blog-next.deno.dev # 📝 Update the build command(s) if necessary
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: "careful-pig-53"
+          project: "kwaa-blog-next"
           import-map: "import_map.json"
           entrypoint: "serve.ts" # 📝 Update the entrypoint if necessary
           root: "." # 📝 Update the root if necessary
