@@ -6,11 +6,11 @@
 
 - SSG: [Lume](https://github.com/lumeland/lume)
 - Theme: [Lume Theme Shiraha](https://github.com/importantimport/lume_theme_shiraha)
-- Host: [Deno Deploy](https://deno.com/deploy)
 - Server: [Hono](https://github.com/honojs/hono)
 
 ### More
 
+- Host: [Deno Deploy](https://deno.com/deploy)
 - Frontmatter: [FFF Flavored Frontmatter](https://github.com/importantimport/fff)
 - CMS: [VSCode Front Matter](https://github.com/estruyf/vscode-front-matter)
 
