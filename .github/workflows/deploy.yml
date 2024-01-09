@@ -28,6 +28,6 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: "careful-pig-53"
-          import-map: import_map.json
-          entrypoint: serve.ts # 📝 Update the entrypoint if necessary
-          root: . # 📝 Update the root if necessary
+          import-map: "import_map.json"
+          entrypoint: "serve.ts" # 📝 Update the entrypoint if necessary
+          root: "." # 📝 Update the root if necessary
