@@ -163,4 +163,16 @@ h2 {
 
 基于 Chromium 的浏览器目前需要手动开启 [#view-transition-on-navigation](chrome://flags/#view-transition-on-navigation) 这个 flag 才能看到动画，希望能早点设为默认吧。
 
+### (maybe) 最强大的 Markdown 语法高亮
+
+这段就是专门吹 `rehype-pretty-code` 这个库的。到底有多强？看看[演示](https://rehype-pretty-code.netlify.app/)吧。
+
+从 Urara 时期我就想用了，但受限于 MDsveX 只能自己手写 Shiki 转换。
+
+LTS 早期 Deno 还没有支持 `npm:` 说明符，我从 esm.sh 导入它 oniguruma 会有问题从而用不了。
+
+几个月后我再看，发现 `rehype-pretty-code` 居然基于 `shikiji` 了！
+
+因为基于 shikiji，所以它的 [Twoslash](https://shikiji.netlify.app/packages/twoslash) 和其他 [Transformer](https://shikiji.netlify.app/packages/transformers) 也都可以用。（问题主要在于我的 CSS 没有适配，之后会更新）
+
 > 先写到这里，之后再更新
