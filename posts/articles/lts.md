@@ -56,13 +56,13 @@ SugarSS 第一版和 Vanilla Extract 第二版全部无望，现在只剩下使�
 
 > 非常好 SSG，插件丰富并且很现代。
 
-不考虑 Astro 的情况下，Lume 就是我的首选 SSG。
+不考虑 Astro（模板阴间）的情况下，Lume 就是我的首选 SSG。
 
 也多亏了它的设计，我可以单独发布主题（而不是提供一个模板），这样用户可以方便更新。
 
 ~~如果你在 2024 年 1 月查看本站源码，就会发现只有 `_config.ts` 和 `serve.ts` 两个 TypeScript 文件~~
 
-#### Fast(est) JSX Template
+### Fast(est) JSX Template
 
 重写之后，我选择了 TSX 作为模板。
 
@@ -108,5 +108,59 @@ site.process(['.html'], (pages) =>
 ```
 
 没错，它会生成 `<script></script>${content}<script></script>{:jsx}`，然后我再在构建时把所有 `<script></script>` 删除，这样就没有空 div 影响样式了。
+
+### View Transitions
+
+原生页面过渡，终于来了！
+
+我基本上是直接用它默认的动画效果，因为省事并且看起来不错。
+
+首先，需要在 html head 加一个 meta，以允许同源 View Transition：
+
+```html
+<meta content="same-origin" name="view-transition" />
+```
+
+然后将不同页面中相同组件的 `view-transition-name` 值匹配，由于 ID 必须是唯一的，这里我写了个插件把 `github-slugger` 注入到 `Lume.Helpers` 里。
+
+```ts title="plugins/helpers/slug.ts"
+import { slug } from 'npm:github-slugger@2.0.0'
+
+export default () => (site: Lume.Site) =>
+  site.helper('slug', slug, { type: 'tag' })
+
+/** Extends Data interface */
+declare global {
+  namespace Lume {
+    export interface Helpers {
+      slug: typeof slug
+    }
+  }
+}
+```
+
+然后在 JSX 模板中使用 slug 函数处理 url（此处仅为示意）：
+
+```tsx
+export default ({ results }: Lume.Data, { slug }: Lume.Helpers) => (
+  <>
+    {results?.map((result) => (
+      <h2 style={`--name: article-title-${slug(data.url)}`}>
+        {data.title}
+      </h2>
+    ))}
+  </>
+)
+```
+
+它设置了 `--name` 变量，还需要增加 CSS 以应用它。
+
+```css
+h2 {
+  view-transition-name: var(--name);
+}
+```
+
+基于 Chromium 的浏览器目前需要手动开启 [#view-transition-on-navigation](chrome://flags/#view-transition-on-navigation) 这个 flag 才能看到动画，希望能早点设为默认吧。
 
 > 先写到这里，之后再更新
