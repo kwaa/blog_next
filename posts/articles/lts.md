@@ -187,7 +187,7 @@ LTS 早期 Deno 还没有支持 `npm:` 说明符，我从 esm.sh 导入它 onigu
 
 <!-- DIVIDER -->
 
-### 说了这么多，那么怎么用呢？
+## 说了这么多，所以怎么用呢？
 
 > 虽然但是，`lume_theme_shiraha@v0.1.0` 还没有发布。
 
@@ -195,7 +195,7 @@ LTS 是主题而不是模板，因此你只需要简单导入即可使用。
 
 你需要先安装 [Deno](https://docs.deno.com/runtime/manual#install-deno) 和 [Lume](https://lume.land/docs/overview/installation/)。
 
-然后设置 importmaps 和 compilerOptions:
+然后设置 `imports` 和 `compilerOptions`:
 
 ```json title="deno.json"
 {
