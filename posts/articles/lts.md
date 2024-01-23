@@ -83,6 +83,14 @@ Fastest is Hono
 
 由于 Hono JSX 已经适配，只需要将 `compilerOptions.jsx` 改为 `precompile` 即可启用。
 
+```json title="deno.json"
+{
+  "compilerOptions": {
+    "jsx": "precompile"
+  }
+}
+```
+
 你可以在 [lume_theme_shiraha/plugins/lts/jsx.ts](https://github.com/importantimport/lume_theme_shiraha/blob/main/plugins/lts/jsx.ts) 找到这个插件的源码，我还针对 slot 做了一些特殊优化：
 
 ```ts
@@ -145,9 +153,7 @@ declare global {
 export default ({ results }: Lume.Data, { slug }: Lume.Helpers) => (
   <>
     {results?.map((result) => (
-      <h2 style={`--name: article-title-${slug(data.url)}`}>
-        {data.title}
-      </h2>
+      <h2 style={`--name: article-title-${slug(data.url)}`}>{data.title}</h2>
     ))}
   </>
 )
@@ -175,4 +181,58 @@ LTS 早期 Deno 还没有支持 `npm:` 说明符，我从 esm.sh 导入它 onigu
 
 因为基于 shikiji，所以它的 [Twoslash](https://shikiji.netlify.app/packages/twoslash) 和其他 [Transformer](https://shikiji.netlify.app/packages/transformers) 也都可以用。（问题主要在于我的 CSS 没有适配，之后会更新）
 
+<!-- DIVIDER -->
+
 > 先写到这里，之后再更新
+
+<!-- DIVIDER -->
+
+### 说了这么多，那么怎么用呢？
+
+> 虽然但是，`lume_theme_shiraha@v0.1.0` 还没有发布。
+
+LTS 是主题而不是模板，因此你只需要简单导入即可使用。
+
+你需要先安装 [Deno](https://docs.deno.com/runtime/manual#install-deno) 和 [Lume](https://lume.land/docs/overview/installation/)。
+
+然后设置 importmaps 和 compilerOptions:
+
+```json title="deno.json"
+{
+  "imports": {
+    "fff/": "https://deno.land/x/fff@v1.2.1/",
+    "lume/": "https://deno.land/x/lume@v2.0.3/",
+    "lume_theme_shiraha/": "https://deno.land/x/lume_theme_shiraha@v0.1.0/",
+    "hono/": "https://deno.land/x/hono@v3.12.2/",
+    "hono/jsx/jsx-runtime": "https://deno.land/x/hono@v3.12.2/jsx/jsx-runtime.ts"
+  },
+  "compilerOptions": {
+    "jsx": "precompile",
+    "jsxImportSource": "hono/jsx",
+    "jsxFactory": "jsx",
+    "jsxFragmentFactory": "Fragment",
+    "types": ["lume/types.ts"]
+  }
+}
+```
+
+最后修改 lume config:
+
+```diff title="_config.ts"
+import lume from 'lume/mod.ts'
++ import lts from 'lume_theme_shiraha/mod.ts'
+
+const site = lume()
+
++ site.use(lts())
+
+export default site
+```
+
+LTS 自带一套默认插件，你可以通过传参来部分修改它。
+
+我之后可能也做个脚本来做这件事？到时候可以这样初始化：
+
+```bash
+deno run -Ar https://deno.land/x/lume_theme_shiraha/init.ts
+```
