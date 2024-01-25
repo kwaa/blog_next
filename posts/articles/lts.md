@@ -200,15 +200,13 @@ LTS 是主题而不是模板，因此你只需要简单导入即可使用。
 ```json title="deno.json"
 {
   "imports": {
-    "fff/": "https://deno.land/x/fff@v1.2.1/",
     "lume/": "https://deno.land/x/lume@v2.0.3/",
     "lume_theme_shiraha/": "https://deno.land/x/lume_theme_shiraha@v0.1.0/",
-    "hono/": "https://deno.land/x/hono@v3.12.2/",
-    "hono/jsx/jsx-runtime": "https://deno.land/x/hono@v3.12.2/jsx/jsx-runtime.ts"
+    "lume_theme_shiraha/jsx-runtime": "https://deno.land/x/lume_theme_shiraha@v0.1.0/jsx-runtime.ts",
   },
   "compilerOptions": {
     "jsx": "precompile",
-    "jsxImportSource": "hono/jsx",
+    "jsxImportSource": "lume_theme_shiraha",
     "jsxFactory": "jsx",
     "jsxFragmentFactory": "Fragment",
     "types": ["lume/types.ts"]
