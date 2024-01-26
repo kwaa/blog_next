@@ -8,6 +8,6 @@ const instance = new URL('https://hatsu.local')
 app.use('/.well-known/*', hatsuWellKnown({ instance }))
 app.use('/articles/*', hatsuObject({ instance }))
 app.get('*', serveStatic({ root: './_site' }))
-app.notFound(c => c.redirect('/404.html', 307))
+app.notFound(({ redirect }) => redirect('/404.html', 307))
 
 Deno.serve(app.fetch)
