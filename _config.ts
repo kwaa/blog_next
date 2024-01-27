@@ -2,6 +2,7 @@ import lume from 'lume/mod.ts'
 import lts from 'lume_theme_shiraha/mod.ts'
 // import { hatsuPlugin as hatsu } from 'aoba/lume/plugins/hatsu.ts'
 import { webmanifest } from './plugins/pwa/webmanifest.ts'
+// import { serviceWorker } from './plugins/pwa/service-worker.ts'
 
 export default lume({ src: './posts' })
   .use(lts())
@@ -21,6 +22,7 @@ export default lume({ src: './posts' })
     },
     minify: false,
   }))
+  // .use(serviceWorker())
   // .use(hatsu({
   //   instance,
   //   match: [/^\/articles\/(.+)$/],
