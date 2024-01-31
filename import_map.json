@@ -1,8 +1,8 @@
 {
   "imports": {
     "lume/": "https://deno.land/x/lume@v2.0.3/",
-    "lume_theme_shiraha/": "https://cdn.jsdelivr.net/gh/importantimport/lume_theme_shiraha@97a87516f8a94ce8496551c995567631bdb82a97/",
-    "lume_theme_shiraha/jsx-runtime": "https://cdn.jsdelivr.net/gh/importantimport/lume_theme_shiraha@97a87516f8a94ce8496551c995567631bdb82a97/jsx-runtime.ts",
+    "lume_theme_shiraha/": "https://cdn.jsdelivr.net/gh/importantimport/lume_theme_shiraha@1e7d797d1be2fcc4a2fb324f80625b298eb2faf0/",
+    "lume_theme_shiraha/jsx-runtime": "https://cdn.jsdelivr.net/gh/importantimport/lume_theme_shiraha@1e7d797d1be2fcc4a2fb324f80625b298eb2faf0/jsx-runtime.ts",
     "hono/": "https://deno.land/x/hono@v3.12.2/",
     "aoba/": "https://deno.land/x/aoba@v0.0.1-alpha.5/"
   }
