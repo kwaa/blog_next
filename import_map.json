@@ -1,6 +1,6 @@
 {
   "imports": {
-    "lume/": "https://deno.land/x/lume@v2.0.3/",
+    "lume/": "https://deno.land/x/lume@v2.1.0/",
     "lume_theme_shiraha/": "https://cdn.jsdelivr.net/gh/importantimport/lume_theme_shiraha@d91ba0b073dd5cc256419080009072f2d28f9ee6/",
     "lume_theme_shiraha/jsx-runtime": "https://cdn.jsdelivr.net/gh/importantimport/lume_theme_shiraha@d91ba0b073dd5cc256419080009072f2d28f9ee6/jsx-runtime.ts",
     "hono/": "https://deno.land/x/hono@v3.12.2/",
