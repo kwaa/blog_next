@@ -119,7 +119,7 @@ preOpenCommands / postOpenCommands 部分我参考了 [NixOS Wiki](https://nixos
 
 我从一开始就准备使用 [Impermanence](https://github.com/nix-community/impermanence)。
 
-本节不会详细说明，简单来说只需要两个 btrfs 子卷——`/nix` 和 `/persist`。
+本节不会详细说明，简单来说只需要两个 Btrfs 子卷——`/nix` 和 `/persist`。
 
 接上面的 `content`，替换 `subvolumes`：
 
@@ -179,6 +179,12 @@ fileSystems."/persist".neededForBoot = true;
   };
 }
 ```
+
+### 透明压缩
+
+可以看到上面 Btrfs 子卷的 mountOptions 是 `"compress=zstd" "noatime"`
+
+我将 `compress=zstd` 改成 `compress-force=zstd:1`，强制使用压缩并增加压缩级别。
 
 ## 应用配置
 
