@@ -1,8 +1,18 @@
 author:
   avatar: https://kwaa.dev/assets/maskable@192.webp
   name: 藍+85CD
-  url: https://kwaa.dev
+  links:
+    - href: https://github.com/kwaa
+      icon: i-simple-icons:github
+    - href: https://matrix.to/#/@kwaa:matrix.org
+      icon: i-simple-icons:element
+    - href: https://kwaa.dev/pgp/4734.pgp
+      icon: i-simple-icons:gnuprivacyguard
+  bio: |
+    你好，我是**藍**，喜欢写一些有意思的东西。随便看看吧！
+
 site:
   title: './kwaa.dev/next'
-  description: '[REDACTED]'
+  description: '#電子の海の向こうまで行こう'
+  icon: https://kwaa.dev/favicon.png
   lang: 'zh'
