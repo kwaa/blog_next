@@ -1,9 +1,9 @@
 {
   "imports": {
-    "lume/": "https://deno.land/x/lume@v2.1.2/",
-    "lume_theme_shiraha/": "https://deno.land/x/lume_theme_shiraha@v0.1.0-alpha.0/",
-    "lume_theme_shiraha/jsx-runtime": "https://deno.land/x/lume_theme_shiraha@v0.1.0-alpha.0/jsx-runtime.ts",
-    "hono/": "https://deno.land/x/hono@v4.1.0/",
+    "lume/": "https://deno.land/x/lume@v2.1.4/",
+    "lume_theme_shiraha/": "https://deno.land/x/lume_theme_shiraha@v0.1.0-alpha.4/",
+    "lume_theme_shiraha/jsx-runtime": "https://deno.land/x/lume_theme_shiraha@v0.1.0-alpha.4/jsx-runtime.ts",
+    "hono/": "https://deno.land/x/hono@v4.2.7/",
     "aoba/": "https://deno.land/x/aoba@v0.0.1-alpha.5/"
   }
 }
