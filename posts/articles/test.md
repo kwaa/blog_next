@@ -8,7 +8,7 @@ Hello, World!
 
 <script type="module">
   import { hatsu } from 'https://esm.sh/@kkna/preset-hatsu'
-  import 'kkna' import { defineConfig } from 'https://esm.sh/@kkna/context'
+  import { defineConfig } from 'https://esm.sh/@kkna/context'
   defineConfig({
     presets: [
       hatsu({ instance: 'https://hatsu-nightly-debug.hyp3r.link' }),
