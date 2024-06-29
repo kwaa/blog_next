@@ -104,11 +104,70 @@ sudo mv /tmp/disko.nix /mnt/etc/nixos/nixos
 
 ### 配置 impermanence
 
-这部分复杂一点，首先从 README 搬一个基础配置：
+这部分复杂一点：首先从 [README](https://github.com/nix-community/impermanence#btrfs-subvolumes) 搬一个基础配置，只需要其中的 boot.initrd.postDeviceCommands 部分。
 
-> TODO
+进行一些修改，使它适合我的分区：
 
-最后添加导入：
+> 你还可以调整 `mtime`，以缩短或增加旧文件保留时间。
+
+```diff
+# nixos/impermanence.nix
+{
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    mkdir /btrfs_tmp
+-   mount /dev/root_vg/root /btrfs_tmp
++   mount /dev/mapper/cryptroot /btrfs_tmp
+    if [[ -e /btrfs_tmp/root ]]; then
+        mkdir -p /btrfs_tmp/old_roots
+        timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
+        mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
+    fi
+
+    delete_subvolume_recursively() {
+        IFS=$'\n'
+        for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+            delete_subvolume_recursively "/btrfs_tmp/$i"
+        done
+        btrfs subvolume delete "$1"
+    }
+
+    for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
+        delete_subvolume_recursively "$i"
+    done
+
+    btrfs subvolume create /btrfs_tmp/root
+    umount /btrfs_tmp
+  '';
+}
+```
+
+在同一个文件下面添加常规的 impermanence 配置：
+
+```nix
+# nixos/impermanence.nix
+{
+  programs.fuse.userAllowOther = true;
+  environment.persistence."/persist" = {
+    hideMounts = true;
+    # https://nixos.wiki/wiki/Impermanence#Persisting
+    directories = [
+      "/var/log"
+      "/var/lib/bluetooth"
+      "/var/lib/nixos"
+      "/var/lib/systemd/coredump"
+      "/var/tmp"
+      "/etc/NetworkManager/system-connections"
+    ];
+    files = [
+      "/etc/machine-id"
+    ];
+  };
+}
+```
+
+这里声明了保留 `machine-id` 和一些系统文件夹。
+
+添加导入：
 
 ```diff
 # flake.nix
@@ -148,3 +207,8 @@ sudo mv /tmp/disko.nix /mnt/etc/nixos/nixos
 }
 ```
 
+#### 配置 impermanence 的 home-manager 模块
+
+没结束，impermanence 还有一个 home-manager 模块。
+
+> TODO
