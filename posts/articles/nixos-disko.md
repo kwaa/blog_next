@@ -13,6 +13,8 @@ published: 2024-03-13
 
 ## 准备
 
+> 2024-06-29: 更新分区方案，增加备用密钥，不再使用 tmpfs
+
 接 [上文](https://kwaa.dev/ventoy-archlinux)，我有一个安装了 Ventoy 的移动硬盘。
 
 从 NixOS 网站下载 [Minimal ISO image (64-bit Intel/AMD)](https://nixos.org/download/#nixos-iso)，放入文件夹并进入 LiveCD 环境。
@@ -69,19 +71,25 @@ curl https://raw.githubusercontent.com/nix-community/disko/master/example/luks-b
 
 预先 FAT32 格式化，通过 `ls -l /dev/disk/by-id` 查看一下分区 ID；
 
-这里是 `/dev/disk/by-id/usb-Acer_USB_Flash_Drive_2235079219404-0:0-part1`。
+这里假设为 `/dev/disk/by-id/usb-primary_key-part1`。
 
-挂载并写入一个 8192 长度的 `nixos.key` 文件：
+挂载并写入一个 8192 长度的 `os.key` 文件：
 
 ```bash
 sudo mkdir -p /key
-sudo mount -n -t vfat -o rw /dev/disk/by-id/usb-Acer_USB_Flash_Drive_2235079219404-0:0-part1 /key
-sudo dd if=/dev/random of=/key/nixos.key bs=8192 count=1
+sudo mount -n -t vfat -o rw /dev/disk/by-id/usb-primary_key-part1 /key
+sudo dd if=/dev/random of=/key/os.key bs=8192 count=1
 ```
+
+如果你有多余的 U 盘，还可以作为备用密钥（只需要将 `os.key` 文件拷贝一份即可）。
 
 修改配置：
 
 ```diff
+let
+  primary_key = "/dev/disk/by-id/usb-primary_key-part1";
+  backup_key = "/dev/disk/by-id/usb-backup_key-part1";
+in
 {
   luks = {
     size = "100%";
@@ -92,15 +100,12 @@ sudo dd if=/dev/random of=/key/nixos.key bs=8192 count=1
         allowDiscards = true;
 +       bypassWorkqueues = true; # 禁用工作队列以提高 SSD 性能
 -       keyFile = "/tmp/secret.key";
-+       keyFile = "/key/nixos.key"; # 密钥文件挂载位置
++       keyFile = "/key/os.key"; # 密钥文件挂载位置
 +       keyFileSize = 8192; # 密钥文件大小
 +       preOpenCommands = ''
 +         mkdir -m 0755 -p /key
 +         sleep 5
-+         until mount -n -t vfat -o ro /dev/disk/by-id/usb-Acer_USB_Flash_Drive_2235079219404-0:0-part1 /key 2>&1 1>/dev/null; do
-+           echo 'Could not find /dev/disk/by-id/usb-Acer_USB_Flash_Drive_2235079219404-0:0-part1, retrying...'
-+           sleep 2
-+         done
++         mount -n -t vfat -o ro ${primary_key} /key || mount -n -t vfat -o ro ${backup_key} /key
 +       '';
 +       postOpenCommands = ''
 +         umount /key
@@ -113,13 +118,13 @@ sudo dd if=/dev/random of=/key/nixos.key bs=8192 count=1
 }
 ```
 
-preOpenCommands / postOpenCommands 部分我参考了 [NixOS Wiki](https://nixos.wiki/wiki/Full_Disk_Encryption#Option_2:_Copy_Key_as_file_onto_a_vfat_usb_stick) 和 [github:reo101/rix101](https://github.com/reo101/rix101/blob/master/machines/nixos/x86_64-linux/jeeves/disko.nix)，后者主要是失败后自动重试。
+preOpenCommands / postOpenCommands 部分我参考了 [NixOS Wiki](https://nixos.wiki/wiki/Full_Disk_Encryption#Option_2:_Copy_Key_as_file_onto_a_vfat_usb_stick)。
 
 ### 无状态
 
-我从一开始就准备使用 [Impermanence](https://github.com/nix-community/impermanence)。
+我从一开始就准备使用 [Impermanence](https://github.com/nix-community/impermanence)，
 
-本节不会详细说明，简单来说只需要两个 Btrfs 子卷——`/nix` 和 `/persist`。
+简单来说只需要两个 Btrfs 子卷——`/nix` 和 `/persist`。
 
 接上面的 `content`，替换 `subvolumes`：
 
@@ -129,11 +134,13 @@ preOpenCommands / postOpenCommands 部分我参考了 [NixOS Wiki](https://nixos
     type = "btrfs";
     extraArgs = [ "-f" ];
     subvolumes = {
--     "/root" = {
-+     "/persist" = {
--       mountpoint = "/";
-+       mountpoint = "/persist";
+      "/root" = {
+        mountpoint = "/";
         mountOptions = [ "compress=zstd" "noatime" ];
+      };
++     "/persist" = {
++       mountpoint = "/persist";
++       mountOptions = [ "compress=zstd" "noatime" ];
 +     };
 -     "/home" = {
 -       mountpoint = "/home";
@@ -160,26 +167,6 @@ fileSystems."/persist".neededForBoot = true;
 
 为什么删掉 swap？因为我觉得我用不到。
 
-接下来添加两个 tmpfs 分区：
-
-```diff
-{
-  disko.devices = {
-    disk.nvme0n1 = { ... };
-+   nodev = {
-+     "/" = {
-+       fsType = "tmpfs";
-+       mountOptions = [ "defaults" "size=2G" "mode=755" "noatime" ];
-+     };
-+     "/home/kwa" = {
-+       fsType = "tmpfs";
-+       mountOptions = [ "defaults" "size=2G" "mode=777" "noatime" ];
-+     };
-+   };
-  };
-}
-```
-
 ### 透明压缩
 
 可以看到上面 Btrfs 子卷的 mountOptions 是 `"compress=zstd" "noatime"`
@@ -194,4 +181,4 @@ sudo nix --experimental-features "nix-command flakes" \
   --mode disko /tmp/disko-config.nix
 ```
 
-运行一下 `mount | grep /mnt` 会发现已经挂载分区，本节就先到这里了。
+运行一下 `mount | grep /mnt` 会发现已经挂载分区。
