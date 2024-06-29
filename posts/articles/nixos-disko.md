@@ -5,6 +5,8 @@ tags:
 published: 2024-03-13
 ---
 
+> 2024-06-29: 更新分区方案，增加备用密钥，不再使用 tmpfs
+
 最近换到 NixOS 了，安装记录写太长干脆多写一点分段发布。
 
 ## 目录
@@ -12,8 +14,6 @@ published: 2024-03-13
 1. 使用 Disko 对硬盘进行声明式分区 (you are here)
 
 ## 准备
-
-> 2024-06-29: 更新分区方案，增加备用密钥，不再使用 tmpfs
 
 接 [上文](https://kwaa.dev/ventoy-archlinux)，我有一个安装了 Ventoy 的移动硬盘。
 
