@@ -94,7 +94,6 @@ sudo mv hardware-configuration.nix /mnt/etc/nixos/nixos
 ```
 
 ```diff
-```diff
 # nixos/configuration.nix
 { inputs, ... }: {
   imports = [
@@ -114,8 +113,6 @@ sudo mv hardware-configuration.nix /mnt/etc/nixos/nixos
   ];
 }
 ```
-```
-
 
 ### 修改 username 和 hostname
 
