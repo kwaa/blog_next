@@ -1,5 +1,5 @@
 ---
-title: NixOS 安装与配置（二）：基础配置
+title: NixOS 安装与配置（二）：系统配置
 tags:
   - NixOS
 published: 2024-06-30
@@ -12,7 +12,8 @@ published: 2024-06-30
 ## 目录
 
 1. [使用 Disko 对硬盘进行声明式分区](./nixos-disko.md)
-2. 基础配置 (you are here)
+2. 系统配置 (you are here)
+3. [程序配置](./nixos-programs.md)
 
 ## 系统配置
 
