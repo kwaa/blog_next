@@ -1,5 +1,5 @@
 ---
-title: NixOS 安装与配置（一）：使用 Disko 对硬盘进行声明式分区
+title: NixOS 安装与配置（一）：硬盘分区
 tags:
   - NixOS
 published: 2024-03-13
@@ -11,7 +11,9 @@ published: 2024-03-13
 
 ## 目录
 
-1. 使用 Disko 对硬盘进行声明式分区 (you are here)
+1. 硬盘分区 (you are here)
+2. [系统配置](./nixos-configuration.md)
+3. [程序配置](./nixos-programs.md)
 
 ## 准备
 
