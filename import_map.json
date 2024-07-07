@@ -3,7 +3,7 @@
     "lume/": "https://deno.land/x/lume@v2.2.3/",
     "lume_theme_shiraha/": "https://deno.land/x/lume_theme_shiraha@v0.1.0-alpha.5/",
     "lume_theme_shiraha/jsx-runtime": "https://deno.land/x/lume_theme_shiraha@v0.1.0-alpha.5/jsx-runtime.ts",
-    "hono/": "jsr:@hono/hono@4.4.10",
+    "hono/": "https://deno.land/x/hono@v4.3.11/",
     "aoba/": "https://deno.land/x/aoba@v0.0.1-alpha.5/"
   }
 }
